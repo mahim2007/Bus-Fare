@@ -1,2 +1,115 @@
-# Bus-Fare
+<!DOCTYPE html><html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বাস ভাড়া ক্যালকুলেটর</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label, select, button, input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            font-size: 20px;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>বাস ভাড়া ক্যালকুলেটর</h1><label for="from">থেকে:</label>
+    <select id="from">
+        <option value="গাবতলি">ঢাকা গাবতলি</option>
+        <option value="সায়দাবাদ">ঢাকা সায়দাবাদ</option>
+        <option value="মহাখালী">ঢাকা মহাখালী</option>
+    </select>
+    
+    <label for="to">যাবেন:</label>
+    <input type="text" id="toSearch" placeholder="জেলার নাম লিখুন...">
+    <select id="to">
+        <!-- এখানে জেলাগুলোর নাম ডাইনামিকভাবে যোগ হবে -->
+    </select>
+    
+    <button onclick="calculateFare()">ভাড়া দেখুন</button>
+    <p class="result" id="fareResult"></p>
+</div>
+
+<script>
+    const districts = [
+        "বরগুনা", "বরিশাল", "ভোলা", "পটুয়াখালী", "ঝালকাঠি", "পিরোজপুর", "বান্দরবান", "ব্রাহ্মণবাড়িয়া", 
+        "চাঁদপুর", "চট্টগ্রাম", "কুমিল্লা", "কক্সবাজার", "ফেনী", "খাগড়াছড়ি", "লক্ষ্মীপুর", "নোয়াখালী", 
+        "রাঙ্গামাটি", "ঢাকা", "ফরিদপুর", "গাজীপুর", "গোপালগঞ্জ", "কিশোরগঞ্জ", "মাদারীপুর", "মানিকগঞ্জ", 
+        "মুন্সিগঞ্জ", "নারায়ণগঞ্জ", "নরসিংদী", "রাজবাড়ী", "শরীয়তপুর", "টাঙ্গাইল", "বগুড়া", "জয়পুরহাট", 
+        "নওগাঁ", "নাটোর", "চাঁপাইনবাবগঞ্জ", "পাবনা", "রাজশাহী", "সিরাজগঞ্জ", "দিনাজপুর", "গাইবান্ধা", 
+        "কুড়িগ্রাম", "লালমনিরহাট", "নীলফামারী", "পঞ্চগড়", "রংপুর", "ঠাকুরগাঁও", "হবিগঞ্জ", "মৌলভীবাজার", 
+        "সুনামগঞ্জ", "সিলেট", "বাগেরহাট", "চুয়াডাঙ্গা", "যশোর", "ঝিনাইদহ", "খুলনা", "কুষ্টিয়া", "মাগুরা", 
+        "মেহেরপুর", "নড়াইল", "সাতক্ষীরা"
+    ];
+    
+    const toSelect = document.getElementById("to");
+    const toSearch = document.getElementById("toSearch");
+
+    function populateDistricts(filter = "") {
+        toSelect.innerHTML = ""; 
+        districts
+            .filter(d => d.includes(filter))
+            .forEach(district => {
+                let option = document.createElement("option");
+                option.value = district;
+                option.textContent = district;
+                toSelect.appendChild(option);
+            });
+    }
+
+    toSearch.addEventListener("input", function () {
+        populateDistricts(this.value);
+    });
+
+    populateDistricts(); 
+
+    function calculateFare() {
+        const from = document.getElementById("from").value;
+        const to = document.getElementById("to").value;
+        const fareData = {
+            "গাবতলি": { "বরিশাল": 350, "চট্টগ্রাম": 600, "রাজশাহী": 400 },
+            "সায়দাবাদ": { "খুলনা": 500, "সিলেট": 450, "কুমিল্লা": 200 }
+        };
+        
+        const fare = fareData[from] && fareData[from][to] ? fareData[from][to] : "ভাড়া পাওয়া যায়নি";
+        document.getElementById("fareResult").textContent = `ঢাকা থেকে ${to} বাস ভাড়া: ${fare} টাকা`;
+    }
+</script>
+
+</body>
+</html># Bus-Fare
 BRTA Bus Fare
